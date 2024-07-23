@@ -3,7 +3,13 @@ from django.db import models
 from django.utils import timezone
 
 
-# Create your models here.
+class PublishedManager(models.Manager):
+    def get_queryset(self):
+        return (
+            super().get_queryset().filter(status=Post.Status.PUBLISHED)
+        )
+
+
 class Post(models.Model):
     class Status(models.TextChoices):
         DRAFT = 'DF', 'Draft'
@@ -25,6 +31,11 @@ class Post(models.Model):
         choices=Status,
         default=Status.DRAFT
     )
+
+
+    objects = models.Manager() # Default manager
+    published = PublishedManager() # Custom manager
+
     class Meta:
         ordering = ['-publish']  # sort results by the 'publish' field in reverse chronological order
         indexes = [models.Index(fields=['-publish'])]  # added index for the 'publish' field, in descending order
