@@ -6,11 +6,15 @@ from django.shortcuts import get_object_or_404, render
 # Create your views here.
 
 
-def post_detail(request, id):  # post_detail view
+def post_detail(request, year, month, day, post):  # post_detail view for retrieve post with a given date
     post = get_object_or_404(
         Post,
-        id=id,
-        status=Post.Status.PUBLISHED
+       
+        status=Post.Status.PUBLISHED,
+        slug=post,
+        publish__year=year,
+        publish__month=month,
+        publish__day=day
  )
     return render(
         request,
