@@ -1,7 +1,7 @@
+from django.core.mail import send_mail
 from .forms import EmailPostForm
 from django.views.generic import ListView
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from django.shortcuts import render
 from .models import Post
 from django.shortcuts import get_object_or_404, render
 
@@ -24,7 +24,7 @@ def post_detail(request, year, month, day, post):  # post_detail view for retrie
         publish__year=year,
         publish__month=month,
         publish__day=day
- )
+    )
     return render(
         request,
         'blog/post/detail.html',
@@ -33,24 +33,50 @@ def post_detail(request, year, month, day, post):  # post_detail view for retrie
 
 
 def post_share(request, post_id):
-    # Retrieve post by id
+    """
+    View to share a post via email
+    """
+    
     post = get_object_or_404(  # retrieve the published post by id
         Post,
-        id=post_id
+        id=post_id,
         status=Post.Status.PUBLISHED
     )
-    if request.method == 'POST':   # Form is being submitted
-        form = EmailPostForm(request.POST)
+    sent = False
+
+
+    if request.method == 'POST':
+        form = EmailPostForm(request.POST) # Form was submitted
         if form.is_valid():
-            # Form passed with validation
-            cd = form.cleaned_data
-        else:
-            form = EmailPostForm()
-        return render(
-            request,
-            'blog/post/share.html',
-            {
-                'post': post,
-                'form': form
-            }
-        )
+            cd = form.cleaned_data # Form validation passed 
+            post_url = request.build_absolute_uri(post.get_absolute_url())
+            
+            subject = (
+                f"{cd['name']} ({cd['email']}) "
+                f"recommends you {post.title}"
+            )
+
+            message = (
+                f"Read {post.title} at {post_url}\n\n"
+                f"{cd['name']}\'s comments: {cd['comments']}"
+            )
+
+            send_mail(
+                subject=subject,
+                message=message,
+                from_email=None,
+                recipient_list=[cd['to']]
+            )
+            sent = True
+    else:
+        form = EmailPostForm()
+    return render(
+        request,
+        'blog/post/share.html',
+        {
+            'post': post,
+            'form': form,
+            'sent': sent
+        }
+    )
+            
