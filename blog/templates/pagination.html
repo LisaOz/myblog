@@ -1,0 +1,17 @@
+{# Comment: this is a Generic pagination template #}
+
+<div class="pagination">
+    <span class="step-links">
+        {% if posts.has_previous %}
+        <a href="?page={{ page.previous_page_number }}">Previous</a>
+        {% endif %}
+
+        <span class="current">
+            Page {{ posts.number }} of {{ posts.paginator.num_pages }} {# displays the current page and total pages #}
+        </span>
+
+        {% if posts.has_next %}
+        <a href="?page={{ page.next_page_number }}">Next</a>
+        {% endif %}
+    </span>
+</div>
