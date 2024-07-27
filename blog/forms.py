@@ -1,4 +1,5 @@
 from django import forms
+from .models import Comment
 
 """
 EmailPostForm inherits from the base Form class
@@ -12,3 +13,12 @@ class EmailPostForm(forms.Form):
         required=False,
         widget=forms.Textarea
     )
+
+"""
+Create dynamic form for comments using the ModelForm
+""" 
+
+class CommentForm(forms.ModelForm):
+    class Meta:
+        model = Comment
+        fields = ['name', 'email', 'body']
