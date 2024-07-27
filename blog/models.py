@@ -59,3 +59,28 @@ class Post(models.Model):
                 self.slug
                 ]
         )
+
+
+"""
+Comment Model
+"""
+class Comment(models.Model):
+    post = models.ForeignKey( # foreign key associates each comment with a single post; many-to-one relationship
+        Post,
+        on_delete=models.CASCADE,
+        related_name='comments'
+    )
+    name = models.CharField(max_length=80)
+    email = models.EmailField()
+    body = models.TextField()
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
+    active = models.BooleanField(default=True) # control the status, will enabling deactivating the inappropriate comments
+
+    class Meta:
+        ordering = ['created']  # to sort the comments in chronological order
+        indexes = [
+            models.Index(fields=['created']),
+        ]
+    def __str__(self):
+        return f'Comment by {self.name} on {self.post}'
