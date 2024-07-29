@@ -7,7 +7,7 @@
         {% endif %}
 
         <span class="current">
-            Page {{ posts.number }} of {{ posts.paginator.num_pages }} {# displays the current page and total pages #}
+            Page {{ page.number }} of {{ page.paginator.num_pages }} {# displays the current page and total pages #}
         </span>
 
         {% if posts.has_next %}

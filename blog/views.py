@@ -1,10 +1,12 @@
 from django.core.mail import send_mail
-from .forms import EmailPostForm, CommentForm
 from django.views.generic import ListView
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from .models import Post
 from django.shortcuts import get_object_or_404, render
 from django.views.decorators.http import require_POST
+from taggit.models import Tag
+from .models import Post
+from .forms import EmailPostForm, CommentForm
+
 
 # Create your views here.
 
@@ -39,7 +41,6 @@ def post_detail(request, year, month, day, post):  # post_detail view for retrie
             'comments': comments,
             'form': form
         }
-        
     )
 
 
@@ -113,4 +114,27 @@ def post_comment(request, post_id):
         }
     )
 
+def post_list(request, tag_slug=None):
+    post_list = Post.published.all()
+    tag = None
+    if tag_slug:
+        tag = get_object_or_404(Tag, slug=tag_slug)
+        post_list = post_list.filter(tags__in=[tag])
 
+    paginator = Paginator(post_list, 3) # dosplay 3 posts on the page
+    page_number = request.GET.get('page', 1)
+    try:
+        posts = paginator.page(page_number)
+    except PageNotAnInteger:
+        posts = paginator.page(1)
+    except EmptyPage:
+        posts = paginator.page(paginator.num_pages)
+    return render(
+        request,
+        'blog/post/list.html',
+        {
+            'posts': posts,
+            'tag': tag,
+
+        }
+    )

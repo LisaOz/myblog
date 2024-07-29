@@ -32,12 +32,18 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    #django packages
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    # third-party applications
+    'taggit', # application for implementing tags
+
+    # local packages
     'blog.apps.BlogConfig',  # application configuration to show Django that application is active for this project
 ]
 
