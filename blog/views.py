@@ -1,3 +1,4 @@
+from django.db.models import Count
 from django.core.mail import send_mail
 from django.views.generic import ListView
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
@@ -19,6 +20,7 @@ class PostListView(ListView):
     paginate_by = 3 # pagination result returns 3 objects per page
     template_name = 'blog/post/list.html' #custom template to render the page with template_name
 
+
 def post_detail(request, year, month, day, post):  # post_detail view for retrieve post with a given date
     post = get_object_or_404(
         Post,
@@ -31,15 +33,24 @@ def post_detail(request, year, month, day, post):  # post_detail view for retrie
 
     # Add the list of comments and the comment form
     comments = post.comments.filter(active=True) # retrieve the list of active comments
-    form = CommentForm() # instance of the Comment Form
+    form = CommentForm() # create the instance of the Comment Form, display the form
 
+    # Implement finding posts with the similar tags
+    post_tags_ids = post.tags.values_list('id', flat=True) # return tag ids values and turn them from tuple values to simple
+    similar_posts = Post.published.filter(
+        tags__in=post_tags_ids # chose the post with the same tags
+    ).exclude(id=post.id) # exlude the current post from the recommended list of posts
+    similar_posts = similar_posts.annotate(  # order the posts with similar tags
+        same_tags=Count('tags')  # 
+    ).order_by('-same_tags', '-publish')[:3] # recommend 3 posts with the same tags, starting with max tags number
     return render(
         request,
         'blog/post/detail.html',
         {
             'post': post,
             'comments': comments,
-            'form': form
+            'form': form,
+            'similar_posts': similar_posts 
         }
     )
 
@@ -121,7 +132,7 @@ def post_list(request, tag_slug=None):
         tag = get_object_or_404(Tag, slug=tag_slug)
         post_list = post_list.filter(tags__in=[tag])
 
-    paginator = Paginator(post_list, 3) # dosplay 3 posts on the page
+    paginator = Paginator(post_list, 3) # display 3 posts on the page
     page_number = request.GET.get('page', 1)
     try:
         posts = paginator.page(page_number)
