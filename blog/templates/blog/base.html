@@ -1,6 +1,7 @@
+{% load blog_tags %}
 {% load static %}
 
-{{ '<' }}{{ '!DOCTYPE html>' }}
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -13,8 +14,12 @@
     {% endblock %}
 </div>
 <div id="sidebar">
-    <h2>My blog</h2>
-    <p>Welcome to my blog</p>
+    <h2>London Cat</h2>
+    <p>
+        Welcome to my blog! Check out the {% total_posts %} posts we have for you.
+    </p>
+    <h3>Latest posts</h3>
+    {% show_latest_posts 3 %}
 </div>
 </body>
 </html>
