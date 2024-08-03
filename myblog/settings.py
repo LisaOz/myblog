@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 
 from pathlib import Path
 from decouple import config
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -21,7 +22,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-=wjse3^=w(!(*weo6pr7-=69c8$bsm9a8_^g%q#u&*7t^jcvn*'
+SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', 'development-fallback-key') # NOTE: NOT TO BE USED IN PRODUCTION
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -41,12 +42,9 @@ INSTALLED_APPS = [
     'django.contrib.sites',
     'django.contrib.sitemaps',
     'django.contrib.staticfiles',
-
-    # third-party applications
-    'taggit', # application for implementing tags
-
-    # local packages
-    'blog.apps.BlogConfig',  # application configuration to show Django that application is active for this project
+    'taggit', # third-party application for implementing tags
+    'blog.apps.BlogConfig',  # local package application configuration to show Django that application is active for this project
+    'django.contrib.postgres',
 ]
 
 MIDDLEWARE = [
@@ -85,8 +83,12 @@ WSGI_APPLICATION = 'myblog.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': config('DB_NAME'),
+        'USER': config('DB_USER'),
+        'PASSWORD': config('DB_PASSWORD'),
+        'HOST': config('DB_HOST'),
+        
     }
 }
 
