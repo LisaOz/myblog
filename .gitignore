@@ -14,5 +14,5 @@ db.sqlite3
 # Log files
 *.log
 
-# users info
-users.json
+# db info
+myblog_data.json

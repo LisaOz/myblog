@@ -76,19 +76,7 @@
     "action_flag": 2,
     "change_message": "[{\"changed\": {\"fields\": [\"Email\"]}}]"
   }
-},
-{
-  "model": "admin.logentry",
-  "pk": 7,
-  "fields": {
-    "action_time": "2024-07-27T20:49:39.187Z",
-    "user": 1,
-    "content_type": 8,
-    "object_id": "1",
-    "object_repr": "Comment by L F on London in Poetry",
-    "action_flag": 2,
-    "change_message": "[{\"changed\": {\"fields\": [\"Active\"]}}]"
-  }
+
 },
 {
   "model": "admin.logentry",
@@ -641,15 +629,7 @@
     "content_type": 11,
     "codename": "view_site"
   }
-},
-{
-  "model": "auth.permission",
-  "pk": 45,
-  "fields": {
-    "name": "Can add tag",
-    "content_type": 12,
-    "codename": "add_tag"
-  }
+
 },
 {
   "model": "auth.permission",
@@ -761,46 +741,10 @@
     "app_label": "sessions",
     "model": "session"
   }
-},
-{
-  "model": "contenttypes.contenttype",
-  "pk": 7,
-  "fields": {
-    "app_label": "blog",
-    "model": "post"
-  }
-},
-{
-  "model": "contenttypes.contenttype",
-  "pk": 8,
-  "fields": {
-    "app_label": "blog",
-    "model": "comment"
-  }
-},
-{
-  "model": "contenttypes.contenttype",
-  "pk": 9,
-  "fields": {
-    "app_label": "taggit",
-    "model": "tag"
-  }
-},
-{
-  "model": "contenttypes.contenttype",
-  "pk": 10,
-  "fields": {
-    "app_label": "taggit",
-    "model": "taggeditem"
-  }
-},
-{
-  "model": "contenttypes.contenttype",
-  "pk": 11,
-  "fields": {
-    "app_label": "sites",
-    "model": "site"
-  }
+
+
+
+
 },
 {
   "model": "contenttypes.contenttype",
