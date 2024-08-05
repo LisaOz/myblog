@@ -1,0 +1,17 @@
+<!-- blog/templates/blog/homepage.html -->
+
+{% extends "blog/base.html" %}
+
+{% block title %} Homepage {% endblock %}
+
+{% block content %}
+<h1>Welcome to the blog Homepage</h1>
+<p>This is the homepage of the blog</p>
+<h2>Click to explore the posts</h2>
+<ul>
+   <li>
+        <a href="{% url 'blog:post_list' %}">Go to blog posts</a>
+   </li>
+</ul>
+
+{% endblock %}

@@ -181,3 +181,6 @@ def post_search(request):
         }
     )
     
+def homepage(request):
+    posts = Post.published.all()
+    return render(request, 'blog/homepage.html', {'posts': posts})

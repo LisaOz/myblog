@@ -18,6 +18,7 @@ from django.contrib import admin
 from django.contrib.sitemaps.views import sitemap
 from django.urls import include, path
 from blog.sitemaps import PostSitemap
+from blog.views import homepage # import the homepage view
 
 # Define sitemap dictionary. This dictionary maps the name 'posts' to the PostSitemap class. 
 #It’s used by the sitemap view to generate the XML for different sitemaps.
@@ -26,6 +27,7 @@ sitemaps = {
 }
 
 urlpatterns = [
+    path('', homepage, name='homepage'),
     path('admin/', admin.site.urls), # Routes requests for /admin/ to the Django admin interface
     path('blog/', include('blog.urls', namespace='blog')), # Routes requests for /blog/ to the URLs defined in the blog application
     path(
