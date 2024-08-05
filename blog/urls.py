@@ -21,5 +21,6 @@ urlpatterns = [
     path('<int:post_id>/comment/', views.post_comment, name='post_comment'), # URL for comment submission
     
     path('feed/', LatestPostsFeed(), name='post_feed'),
+    path('search/', views.post_search, name='post_search'),
 ]
 
