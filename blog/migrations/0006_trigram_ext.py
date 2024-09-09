@@ -11,5 +11,5 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        TrigramExtension()
+        TrigramExtension() # add the TrigramExtension operation to the database migration
     ]
