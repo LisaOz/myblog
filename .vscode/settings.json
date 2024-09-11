@@ -1,0 +1,5 @@
+{
+    "terminal.integrated.env.windows": {
+        "PATH": "C:\\Program Files\\PostgreSQL\\16\\bin;${env:PATH}"
+    }
+}
